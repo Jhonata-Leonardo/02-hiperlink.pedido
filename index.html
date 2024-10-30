@@ -20,7 +20,7 @@
             align-items: center;
         }
         h1 {
-            font-size: 36px; /* Tamanho do título */
+            font-size: 36px;
             text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
             color: black;
         }
@@ -31,7 +31,7 @@
             margin-bottom: 20px;
         }
         button {
-            font-size: 24px; /* Tamanho dos botões */
+            font-size: 24px;
             padding: 15px 30px;
             cursor: pointer;
             border: none;
@@ -39,7 +39,7 @@
             transition: transform 0.3s;
         }
         .emoji {
-            font-size: 32px; /* Aumenta o tamanho do emoji */
+            font-size: 32px;
             margin-left: 5px;
         }
         .rgb-effect {
@@ -53,19 +53,23 @@
             100% { box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red; }
         }
         .hidden {
-            display: none; /* Classe para ocultar elementos */
+            display: none;
         }
         .heart {
-            font-size: 100px; /* Tamanho do coração */
+            font-size: 100px;
             color: red;
             position: absolute;
             animation: heartbeat 1s ease forwards;
-            opacity: 0; /* Começa invisível */
+            opacity: 0;
         }
         @keyframes heartbeat {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); opacity: 0; }
+        }
+        .message {
+            font-size: 24px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -76,87 +80,82 @@
         <button id="nao">Não 💔</button>
     </div>
     <div id="emojiContainer" class="hidden" style="margin-top: 30px; font-size: 36px;">☝😏</div>
-    <div id="heartContainer"></div> <!-- Contêiner para o coração -->
+    <div class="message" id="message"></div>
+    <div id="heartContainer"></div>
     <script>
         document.getElementById('sim').addEventListener('click', function() {
             const heart = document.createElement('div');
             heart.className = 'heart';
-            heart.innerHTML = '&#10084;'; // Coração
+            heart.innerHTML = '&#10084;';
             document.getElementById('heartContainer').appendChild(heart);
-
 
             heart.style.left = '50%';
             heart.style.top = '50%';
             heart.style.transform = 'translate(-50%, -50%)';
 
-
             setTimeout(function() {
                 window.location.href = 'https://youtube.com/shorts/CYwZgJJtIms?si=qQHmBRHZjgwEMA0y';
-            }, 1000); // Atraso de 1 segundo
+            }, 1000);
         });
-
 
         let naoButton = document.getElementById('nao');
         let emojiContainer = document.getElementById('emojiContainer');
+        let messageDiv = document.getElementById('message');
         let messages = [
             "Slk 😞🥀...?",
             "Tem certeza? 🤔",
-            "eu aceitaria em...🤧",
+            "Eu aceitaria em...🤧",
             "Você não vai aceitar mesmo? 😔",
             "Quer saber então ?...",
             "Já que você não aceita, você também não terá opção 🤠!!"
         ];
 
-
         let messageIndex = 0;
-
 
         function showMessage() {
             if (messageIndex < messages.length) {
-                alert(messages[messageIndex]);
+                messageDiv.innerText = messages[messageIndex];
                 messageIndex++;
-
 
                 if (messageIndex === messages.length) {
                     naoButton.style.display = 'none';
-                    emojiContainer.classList.remove('hidden'); // Exibe o emoji
+                    emojiContainer.classList.remove('hidden');
                     document.getElementById('sim').classList.add('rgb-effect');
                 } else {
-                    let maxX = window.innerWidth - naoButton.offsetWidth;
-                    let maxY = window.innerHeight - naoButton.offsetHeight;
-                    let newX = Math.random() * maxX;
-                    let newY = Math.random() * maxY;
-                    naoButton.style.position = 'absolute';
-                    naoButton.style.left = newX + 'px';
-                    naoButton.style.top = newY + 'px';
+                    moveNaoButton();
                 }
             }
         }
 
+        function moveNaoButton() {
+            let maxX = window.innerWidth - naoButton.offsetWidth;
+            let maxY = window.innerHeight - naoButton.offsetHeight;
+            let newX = Math.random() * maxX;
+            let newY = Math.random() * maxY;
+            naoButton.style.position = 'absolute';
+            naoButton.style.left = newX + 'px';
+            naoButton.style.top = newY + 'px';
+        }
 
         function showBrokenHeartEffect(event) {
             const heartEffect = document.createElement('div');
             heartEffect.className = 'heart';
-            heartEffect.innerHTML = '💔'; // Coração partido
+            heartEffect.innerHTML = '💔';
             document.body.appendChild(heartEffect);
-
 
             heartEffect.style.left = event.clientX + 'px';
             heartEffect.style.top = event.clientY + 'px';
             heartEffect.style.transform = 'translate(-50%, -50%)';
 
-
             setTimeout(() => {
-                heartEffect.remove(); // Remove após 1 segundo
+                heartEffect.remove();
             }, 1000);
         }
 
-
         naoButton.addEventListener('mouseover', showMessage);
         naoButton.addEventListener('click', showMessage);
-        naoButton.addEventListener('mouseenter', showBrokenHeartEffect); // Efeito ao passar o mouse
-        naoButton.addEventListener('click', showBrokenHeartEffect); // Efeito ao clicar
+        naoButton.addEventListener('mouseenter', showBrokenHeartEffect);
+        naoButton.addEventListener('click', showBrokenHeartEffect);
     </script>
 </body>
 </html>
-
