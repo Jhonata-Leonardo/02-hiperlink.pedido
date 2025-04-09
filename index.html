@@ -1,104 +1,257 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido de Namoro</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background: url('https://i.pinimg.com/736x/89/4e/98/894e98a7dd73da2dde06b181b4daca5e.jpg') center/cover no-repeat;
-            height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        h1, .message {
-            font-size: 36px; 
-            text-shadow: 2px 2px 0 white, -2px -2px 0 white; 
-            color: black;
-        }
-        .button-container {
-            display: flex; gap: 20px; margin-bottom: 20px;
-        }
-        button {
-            font-size: 24px; padding: 15px 30px; cursor: pointer; border: none; border-radius: 10px; transition: transform 0.3s;
-        }
-        .emoji { font-size: 32px; }
-        .rgb-effect { animation: rgbPulse 1.5s infinite; }
-        @keyframes rgbPulse {
-            0%, 100% { box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red; }
-            25% { box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green; }
-            50% { box-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue; }
-            75% { box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; }
-        }
-        .hidden { display: none; }
-        .heart { font-size: 100px; color: red; position: absolute; animation: heartbeat 1s ease forwards; opacity: 0; }
-        @keyframes heartbeat { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 0; } }
-        .message { font-size: 24px; margin-top: 20px; text-shadow: 2px 2px 0 white, -2px -2px 0 white; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedido de Namoro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: url('https://i.pinimg.com/736x/89/4e/98/894e98a7dd73da2dde06b181b4daca5e.jpg') center/cover no-repeat;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #telaInicial, #telaAceitou {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    #telaInicial.active, #telaAceitou.active {
+      display: flex;
+    }
+
+    #telaAceitou {
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqtyfN1a5xBGVvKFLJEOB_2vnS5AnB0tTW4Ucg1BwBVohtstPeMiBfzeA&s=10') center/cover no-repeat;
+    }
+
+    #telaAceitou::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 0;
+    }
+
+    #telaAceitou > * {
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 36px;
+      text-shadow: 2px 2px 0 white, -2px -2px 0 white;
+      color: black;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    button {
+      font-size: 24px;
+      padding: 15px 30px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+
+    .rgb-effect {
+      animation: rgbPulse 1.5s infinite;
+    }
+
+    @keyframes rgbPulse {
+      0%, 100% { box-shadow: 0 0 5px red, 0 0 10px red, 0 0 15px red; }
+      25% { box-shadow: 0 0 5px green, 0 0 10px green, 0 0 15px green; }
+      50% { box-shadow: 0 0 5px blue, 0 0 10px blue, 0 0 15px blue; }
+      75% { box-shadow: 0 0 5px yellow, 0 0 10px yellow, 0 0 15px yellow; }
+    }
+
+    .hidden { display: none; }
+
+    .emoji { font-size: 32px; }
+
+    .message {
+      font-size: 24px;
+      margin-top: 20px;
+      text-shadow: 2px 2px 0 white, -2px -2px 0 white;
+    }
+
+    .heart {
+      font-size: 100px;
+      color: red;
+      position: absolute;
+      animation: heartbeat 1s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 0; }
+    }
+
+    .envelope {
+      width: 300px;
+      position: relative;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    .carta-fechada, .carta-aberta {
+      width: 100%;
+      border-radius: 10px;
+      transition: opacity 0.3s ease;
+    }
+
+    .papel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -20px);
+      width: 80%;
+      padding: 15px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.6s ease, top 0.6s ease;
+      white-space: pre-line;
+      font-size: 16px;
+    }
+
+    .papel.aberto {
+      opacity: 1;
+      top: -50px;
+    }
+  </style>
 </head>
 <body>
+  <div id="telaInicial" class="active">
     <h1>Você aceitaria namorar comigo?</h1>
     <div class="button-container">
-        <button id="sim">Sim <span class="emoji">&#10084;&#65039;</span></button>
-        <button id="nao">Não 💔</button>
+      <button id="sim">Sim <span class="emoji">&#10084;&#65039;</span></button>
+      <button id="nao">Não 💔</button>
     </div>
     <div id="emojiContainer" class="hidden" style="margin-top: 30px; font-size: 36px;">☝😏</div>
     <div class="message" id="message"></div>
     <div id="heartContainer"></div>
-    <script>
-        document.getElementById('sim').onclick = () => {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '&#10084;';
-            heart.style.left = heart.style.top = '50%';
-            heart.style.transform = 'translate(-50%, -50%)';
-            document.getElementById('heartContainer').appendChild(heart);
-            setTimeout(() => window.location.href = 'https://youtube.com/shorts/CYwZgJJtIms?si=qQHmBRHZjgwEMA0y', 1000);
-        };
+  </div>
 
-        const naoButton = document.getElementById('nao');
-        const emojiContainer = document.getElementById('emojiContainer');
-        const messageDiv = document.getElementById('message');
-        const messages = ["Slk 😞🥀...?", "Tem certeza? 🤔", "Eu aceitaria em...🤧", "Você não vai aceitar mesmo? 😔", "Quer saber então ?...", "Já que você não aceita, você também não terá opção 🤠!!"];
-        let messageIndex = 0;
-
-        naoButton.addEventListener('mouseover', showMessage);
-        naoButton.addEventListener('click', showMessage);
-        naoButton.addEventListener('mouseenter', showBrokenHeartEffect);
+  <div id="telaAceitou">
+    <h1>Já que você aceitou, por livre e espontânea vontade 😁, então agora é só esperar os preparativos que irei arrumar em 24h úteis!</h1>
+    <div class="envelope" onclick="abrirCarta(event)">
+      <img class="carta-fechada" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqJqVXGjoQczf7D6PiJ83QqcI8AFTOPWPrqGeFiSskrtyTn3A0QVGZz54&s=10" alt="Carta Fechada">
+      <img class="carta-aberta hidden" src="https://png.pngtree.com/png-clipart/20220124/original/pngtree-love-letter-png-image_7182095.png" alt="Carta Aberta">
+      <div class="papel" id="papel">
+        Minha flor,  
+        Se beleza fosse tempo,  
+        você seria a eternidade todinha.  
         
-        function showMessage() {
-            if (messageIndex < messages.length) {
-                messageDiv.innerText = messages[messageIndex++];
-                messageDiv.style.display = 'block';
-                if (messageIndex === messages.length) {
-                    naoButton.style.display = 'none';
-                    emojiContainer.classList.remove('hidden');
-                    document.getElementById('sim').classList.add('rgb-effect');
-                } else {
-                    moveNaoButton();
-                }
-            }
-        }
+        — ass: Uma pessoa Exótica.
+      </div>
+    </div>
 
-        function moveNaoButton() {
-            naoButton.style.position = 'absolute';
-            naoButton.style.left = Math.random() * (window.innerWidth - naoButton.offsetWidth) + 'px';
-            naoButton.style.top = Math.random() * (window.innerHeight - naoButton.offsetHeight) + 'px';
-        }
+    <!-- Música romântica -->
+    <audio id="musica" loop>
+      <source src="https://files.catbox.moe/0h4wa7.m4a" type="audio/mp4">
+    </audio>
 
-        function showBrokenHeartEffect(event) {
-            const heartEffect = document.createElement('div');
-            heartEffect.className = 'heart';
-            heartEffect.innerHTML = '💔';
-            heartEffect.style.left = event.clientX + 'px';
-            heartEffect.style.top = event.clientY + 'px';
-            heartEffect.style.transform = 'translate(-50%, -50%)';
-            document.body.appendChild(heartEffect);
-            setTimeout(() => heartEffect.remove(), 1000);
+    <!-- Efeito sonoro da carta -->
+    <audio id="plim" src="https://www.myinstants.com/media/sounds/tinder-message.mp3"></audio>
+  </div>
+
+  <script>
+    const simBtn = document.getElementById('sim');
+    const naoBtn = document.getElementById('nao');
+    const messageDiv = document.getElementById('message');
+    const emojiContainer = document.getElementById('emojiContainer');
+    const telaInicial = document.getElementById('telaInicial');
+    const telaAceitou = document.getElementById('telaAceitou');
+    const mensagens = ["Slk 😞🥀...?", "Tem certeza? 🤔", "Eu aceitaria em...🤧", "Você não vai aceitar mesmo? 😔", "Quer saber então ?...", "Já que você não aceita, você também não terá opção 🤠!!"];
+    let i = 0;
+
+    simBtn.onclick = () => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '&#10084;';
+      heart.style.left = heart.style.top = '50%';
+      heart.style.transform = 'translate(-50%, -50%)';
+      document.getElementById('heartContainer').appendChild(heart);
+
+      setTimeout(() => {
+        telaInicial.classList.remove('active');
+        telaAceitou.classList.add('active');
+        const musica = document.getElementById('musica');
+        musica.play().catch(() => {
+          alert("Clique na tela para ativar o som!");
+        });
+      }, 1000);
+    };
+
+    naoBtn.addEventListener('mouseover', mostrarMensagem);
+    naoBtn.addEventListener('click', mostrarMensagem);
+    naoBtn.addEventListener('mouseenter', efeitoCoraçãoPartido);
+
+    function mostrarMensagem() {
+      if (i < mensagens.length) {
+        messageDiv.innerText = mensagens[i++];
+        messageDiv.style.display = 'block';
+        if (i === mensagens.length) {
+          naoBtn.style.display = 'none';
+          emojiContainer.classList.remove('hidden');
+          simBtn.classList.add('rgb-effect');
+        } else {
+          moverNao();
         }
-    </script>
+      }
+    }
+
+    function moverNao() {
+      naoBtn.style.position = 'absolute';
+      naoBtn.style.left = Math.random() * (window.innerWidth - naoBtn.offsetWidth) + 'px';
+      naoBtn.style.top = Math.random() * (window.innerHeight - naoBtn.offsetHeight) + 'px';
+    }
+
+    function efeitoCoraçãoPartido(event) {
+      const heartEffect = document.createElement('div');
+      heartEffect.className = 'heart';
+      heartEffect.innerHTML = '💔';
+      heartEffect.style.left = event.clientX + 'px';
+      heartEffect.style.top = event.clientY + 'px';
+      heartEffect.style.transform = 'translate(-50%, -50%)';
+      document.body.appendChild(heartEffect);
+      setTimeout(() => heartEffect.remove(), 1000);
+    }
+
+    function abrirCarta(event) {
+      const carta = event.currentTarget;
+      const cartaFechada = carta.querySelector(".carta-fechada");
+      const cartaAberta = carta.querySelector(".carta-aberta");
+      const papel = carta.querySelector(".papel");
+
+      cartaFechada.classList.add("hidden");
+      cartaAberta.classList.remove("hidden");
+
+      setTimeout(() => {
+        papel.classList.add("aberto");
+      }, 300);
+
+      const audio = document.getElementById("plim");
+      audio.play();
+    }
+  </script>
 </body>
 </html>
