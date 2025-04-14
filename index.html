@@ -3,18 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CLONADOR DE CARTÃO KKKK</title>
+  <title>Pedido Especial</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+    * {
       margin: 0;
       padding: 0;
-      background: url('https://i.pinimg.com/736x/89/4e/98/894e98a7dd73da2dde06b181b4daca5e.jpg') center/cover no-repeat;
-      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
       overflow: hidden;
     }
 
+    /* === TELA DE DESBLOQUEIO === */
+    #telaDesbloqueio {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://img.freepik.com/foto-premium/un-lucchetto-rosa-moderno-su-uno-sfondo-rosa-morbido-che-simboleggia-la-sicurezza-e-la-protezione-in-stile-minimalista_923559-23394.jpg?w=1380') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1s ease-out;
+      padding: 20px;
+    }
+
+    .mensagem-romantica {
+      background: radial-gradient(circle, #ff80b3, #99004d);
+      padding: 25px 35px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px #ff99cc;
+      font-size: 1.7em;
+      color: white;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .scanner {
+      position: relative;
+      width: 250px;
+      cursor: pointer;
+    }
+
+    .digital-img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px #ff80b3;
+      opacity: 0.95;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .linha-scanner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 128, 179, 0.8);
+      animation: scan 2s infinite;
+      border-radius: 10px;
+    }
+
+    .barra-progresso {
+      width: 100%;
+      height: 10px;
+      background: #fff2fa;
+      border-radius: 10px;
+      margin-top: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #ffb3d9 inset;
+    }
+
+    .progresso {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(to right, #ff66a3, #cc0066);
+      transition: width 0.1s;
+    }
+
+    @keyframes scan {
+      0% { top: 0%; }
+      50% { top: 90%; }
+      100% { top: 0%; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* === PEDIDO DE NAMORO === */
     #telaInicial, #telaAceitou {
       display: none;
       flex-direction: column;
@@ -22,10 +111,15 @@
       align-items: center;
       height: 100vh;
       position: relative;
+      text-align: center;
     }
 
     #telaInicial.active, #telaAceitou.active {
       display: flex;
+    }
+
+    body.desbloqueado {
+      background: url('https://i.pinimg.com/736x/89/4e/98/894e98a7dd73da2dde06b181b4daca5e.jpg') center/cover no-repeat;
     }
 
     #telaAceitou {
@@ -140,15 +234,34 @@
   </style>
 </head>
 <body>
-  <div id="telaInicial" class="active">
+  <!-- Tela de Desbloqueio -->
+  <div id="telaDesbloqueio">
+    <div class="mensagem-romantica">
+      Acesso restrito!!<br>
+      <strong>Somente para a futura dona do meu coração!</strong>
+    </div>
+    <div class="scanner" id="scannerArea">
+      <img src="https://i.imgur.com/hMM4mqx.jpeg" alt="Impressão Digital" class="digital-img">
+      <div class="linha-scanner"></div>
+      <div class="barra-progresso">
+        <div class="progresso" id="progressoBarra"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tela Inicial do Pedido -->
+  <div id="telaInicial">
     <h1>
-  Carol, permitiria, minha pessoa<br>
-  ser um companheiro para<br>
-  tentar alegrar vossos dias?<br>
-  (isso quer dizer que 👇🏻)<br>
-  "Você aceitaria começar<br>
-  um namoro com esse<br>
-  humilde rapaz kk ?"
+      Olá Carol 👋🏻😁 <br>
+      vossa pessoa, por um acaso<br>
+      permitiria, minha pessoa<br>
+      ser para vos , um companheiro?
+      que de tudo fara para<br>
+      tentar alegrar vossos dias?<br>
+      [ Ou melhor ainda kk ]
+      "Você aceitaria começar<br>
+      um namoro com esse<br>
+      humilde rapaz kk ?"
     </h1>
     <div class="button-container">
       <button id="sim">Sim <span class="emoji">&#10084;&#65039;</span></button>
@@ -159,29 +272,64 @@
     <div id="heartContainer"></div>
   </div>
 
+  <!-- Tela Aceitou -->
   <div id="telaAceitou">
-    <h1> ❣️ Já que você aceitou, por livre e espontânea vontade 😁, então agora é só esperar os preparativos que irei arrumar em 24h úteis! ❣️</h1>
+    <h1>❣️ Já que você aceitou, por livre e espontânea vontade 😁, então agora é só esperar os preparativos que irei arrumar em 24h úteis! ❣️</h1>
     <div class="envelope" onclick="abrirCarta(event)">
       <img class="carta-fechada" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqJqVXGjoQczf7D6PiJ83QqcI8AFTOPWPrqGeFiSskrtyTn3A0QVGZz54&s=10" alt="Carta Fechada">
       <img class="carta-aberta hidden" src="https://png.pngtree.com/png-clipart/20220124/original/pngtree-love-letter-png-image_7182095.png" alt="Carta Aberta">
       <div class="papel" id="papel">
-        
 🌷 "Se você fosse um bug no código da realidade, eu jamais corrigiria... Porque cada loop do seu olhar me prende num while(true) de paixão, e nem o ctrl+z desfaz o que sinto. Meu coração? Um banco de dados onde você é a única chave primária." 🌷
 
 ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso 💕.
       </div>
     </div>
-
-    <!-- Música romântica -->
     <audio id="musica" loop>
       <source src="https://files.catbox.moe/0h4wa7.m4a" type="audio/mp4">
     </audio>
-
-    <!-- Efeito sonoro da carta -->
     <audio id="plim" src="https://www.myinstants.com/media/sounds/tinder-message.mp3"></audio>
   </div>
 
   <script>
+    // BLOQUEIO
+    const scanner = document.getElementById("scannerArea");
+    const barra = document.getElementById("progressoBarra");
+    const telaDesbloqueio = document.getElementById("telaDesbloqueio");
+    const imagemDigital = document.querySelector(".digital-img");
+    let progresso = 0;
+    let intervalo;
+
+    imagemDigital.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    scanner.addEventListener("touchstart", iniciarProgresso);
+    scanner.addEventListener("mousedown", iniciarProgresso);
+    scanner.addEventListener("touchend", resetarProgresso);
+    scanner.addEventListener("mouseup", resetarProgresso);
+
+    function iniciarProgresso() {
+      intervalo = setInterval(() => {
+        if (progresso < 100) {
+          progresso++;
+          barra.style.width = progresso + "%";
+        } else {
+          clearInterval(intervalo);
+          telaDesbloqueio.style.animation = "fadeOut 1s forwards";
+          setTimeout(() => {
+            telaDesbloqueio.remove();
+            document.body.classList.add('desbloqueado');
+            document.getElementById("telaInicial").classList.add("active");
+          }, 1000);
+        }
+      }, 30);
+    }
+
+    function resetarProgresso() {
+      clearInterval(intervalo);
+      progresso = 0;
+      barra.style.width = "0%";
+    }
+
+    // INTERAÇÃO ROMÂNTICA
     const simBtn = document.getElementById('sim');
     const naoBtn = document.getElementById('nao');
     const messageDiv = document.getElementById('message');
@@ -257,8 +405,7 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
         papel.classList.add("aberto");
       }, 300);
 
-      const audio = document.getElementById("plim");
-      audio.play();
+      document.getElementById("plim").play();
     }
   </script>
 </body>
