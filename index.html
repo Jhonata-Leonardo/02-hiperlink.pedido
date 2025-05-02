@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pedido Especial</title>
+  <title> CLONADOR DE CARTÃO 3.0 </title>
   <style>
     * {
       margin: 0;
@@ -260,6 +260,8 @@
       margin-left: auto;
       margin-right: auto;
     }
+    
+    audio { display: none; }
   </style>
 </head>
 <body>
@@ -286,7 +288,7 @@
   <!-- Tela Inicial do Pedido -->
   <div id="telaInicial">
     <h1 class="balao-principal">
-            Olá, tudo bem? 😄<br>
+                       Olá, tudo bem? 😄<br>
       você costuma frequentar este lugar com frequência ?😅 <br>
       Enfim kk, gostaria de fazer uma pergunta... <br>
       Você aceitaria a ideia de permitir que eu "um humilde rapaz"
@@ -322,10 +324,18 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
       <source src="https://files.catbox.moe/0h4wa7.m4a" type="audio/mp4">
     </audio>
     <audio id="plim" src="https://www.myinstants.com/media/sounds/tinder-message.mp3"></audio>
+    <!-- Áudio adicionado para o botão Não -->
+    <audio id="audioNao">
+      <source src="https://www.myinstants.com/media/sounds/erro.mp3" type="audio/mpeg">
+    </audio>
+    <!-- Novo áudio para o botão Sim -->
+    <audio id="audioSim">
+      <source src="https://www.myinstants.com/media/sounds/windows-xp-startup.mp3" type="audio/mpeg">
+    </audio>
   </div>
 
   <script>
-    // BLOQUEIO
+    // BLOQUEIO (permanece igual)
     const scanner = document.getElementById("scannerArea");
     const barra = document.getElementById("progressoBarra");
     const telaDesbloqueio = document.getElementById("telaDesbloqueio");
@@ -370,10 +380,16 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
     const emojiContainer = document.getElementById('emojiContainer');
     const telaInicial = document.getElementById('telaInicial');
     const telaAceitou = document.getElementById('telaAceitou');
+    const audioNao = document.getElementById('audioNao');
+    const audioSim = document.getElementById('audioSim');
+    const musica = document.getElementById('musica'); // Movido para cá
     const mensagens = ["Slk 😞🥀...?", "Tem certeza? 🤔", "Eu aceitaria em...🤧", "Você não vai aceitar mesmo? 😔", "Quer saber então ?...", "Já que você não aceita, você também não terá opção 🤠!!"];
     let i = 0;
 
     simBtn.onclick = () => {
+      audioSim.currentTime = 0;
+      audioSim.play().catch(e => console.log("Erro no áudio:", e));
+      
       const heart = document.createElement('div');
       heart.className = 'heart';
       heart.innerHTML = '&#10084;';
@@ -384,18 +400,17 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
       setTimeout(() => {
         telaInicial.classList.remove('active');
         telaAceitou.classList.add('active');
-        const musica = document.getElementById('musica');
-        musica.play().catch(() => {
-          alert("Clique na tela para ativar o som!");
-        });
+        // Removido o play da música aqui
       }, 1000);
     };
 
-    naoBtn.addEventListener('mouseover', mostrarMensagem);
-    naoBtn.addEventListener('click', mostrarMensagem);
-    naoBtn.addEventListener('mouseenter', efeitoCoraçãoPartido);
-
-    function mostrarMensagem() {
+    naoBtn.onclick = () => {
+      audioNao.currentTime = 0;
+      audioNao.play().catch(e => {
+        console.log("Erro no áudio:", e);
+        alert("Toque em qualquer lugar da tela para liberar o áudio!");
+      });
+      
       if (i < mensagens.length) {
         messageDiv.innerText = mensagens[i++];
         messageDiv.style.display = 'block';
@@ -407,7 +422,7 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
           moverNao();
         }
       }
-    }
+    };
 
     function moverNao() {
       naoBtn.style.position = 'absolute';
@@ -440,6 +455,11 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
       }, 300);
 
       document.getElementById("plim").play();
+      
+      // Música agora toca aqui quando a carta é aberta
+      musica.play().catch(() => {
+        alert("Clique na tela para ativar o som!");
+      });
     }
   </script>
 </body>
