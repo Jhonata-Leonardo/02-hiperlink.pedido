@@ -35,19 +35,19 @@
     }
 
     .mensagem-romantica {
-    background: radial-gradient(circle, #ff80b3, #99004d);
-    padding: 15px 15px;
-    border-radius: 25px;
-    box-shadow: 0 0 25px #ff99cc;
-    font-size: 0.9em;
-    color: white;
-    margin-bottom: 50px;
-    text-align: justify;
-    line-height: 1.6;
-    width: 80%;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+      background: radial-gradient(circle, #ff80b3, #99004d);
+      padding: 15px 15px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px #ff99cc;
+      font-size: 0.9em;
+      color: white;
+      margin-bottom: 50px;
+      text-align: justify;
+      line-height: 1.6;
+      width: 80%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .scanner {
@@ -241,7 +241,7 @@
     .balao-principal {
       background: rgba(255, 255, 255, 0.12);
       border: 2px solid rgba(255, 255, 255, 0.3);
-      padding: 25px;
+      padding: 15px;
       border-radius: 25px;
       backdrop-filter: blur(6px);
       text-align: center;
@@ -260,6 +260,38 @@
       margin-left: auto;
       margin-right: auto;
     }
+
+    .area-rosas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .rosa {
+      position: absolute;
+      top: -50px;
+      font-size: 24px;
+      animation: cairRosa 5s linear forwards;
+      opacity: 0.8;
+      z-index: 1;
+      color: #ff0066;
+    }
+
+    @keyframes cairRosa {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
     
     audio { display: none; }
   </style>
@@ -269,7 +301,7 @@
   <div id="telaDesbloqueio">
     <div class="mensagem-romantica">
       <strong>
-        <h1>  🔒Tela de Bloqueio: Amor em Beta 💻❤️🔒 </h1><br>
+        <h1>  🔒 Área Bloqueada: Amor em Beta 1.0🔒 </h1><br>
           <p>|Status: Aguardando conexão emocional estável... ✅</p>
             <br>
            <p>🛡️Permissão especial requerida para acessar o coração deste sistema🛡️<br>
@@ -291,17 +323,22 @@
   <!-- Tela Inicial do Pedido -->
   <div id="telaInicial">
     <h1 class="balao-principal">
- Olá, tudo bem? 😄<br>
-Você costuma vir a este lugar com frequência? 😅<br>
-Bem, gostaria de lhe perguntar se, Você consideraria a ideia<br>
-de dar a este humilde rapaz, a chance de ser seu companheiro 🥶<br>
-Tentando sempre te fazer feliz? 🌟
+  <p> Olá 👋🏻😁 , como vai?</p>
+espero que o scanner não tenha falhado 😅  
+bom, não quero enrolar muito, provavelmente a telinha anterior ja deu um-
+spoiler do que vai se tratar este assunto 😶‍🌫️  
+Bem, gostaria de lhe perguntar se, Você consideraria a ideia de 
+dar, a este humilde rapaz, a chance de ser seu companheiro? 🫣
+Tentando sempre te fazer feliz ? 🌟
 <br>
-Ou, se preferir:
+Sendo mais claro e direto.
 <br>
-Você teria interesse em começar um relacionamento com alguém que<br>
-está à sua disposição para Tentar o possível e o impossível para <br>
-fazer-lhe sorrir, até mesmo nos momentos mais inapropriados 😅 ?<br>
+Você teria ou tem interesse para, começar um relacionamento, tendo em mente que isso é 
+algo serio que envolve sentimentos? 😬  importante ter em mente que tera
+que ter "paciência 😅" e "reciprocidade 👍🏻"<br>
+<br> 
+  Ágora, fica a você decidir, "Yes" or "Nou"?:
+<br>
 
     </h1>
     <div class="button-container">
@@ -311,8 +348,9 @@ fazer-lhe sorrir, até mesmo nos momentos mais inapropriados 😅 ?<br>
     <div id="emojiContainer" class="hidden" style="margin-top: 30px; font-size: 36px;">☝😏</div>
     <div class="message" id="message"></div>
     <div id="heartContainer"></div>
+    <div class="area-rosas" id="areaRosas"></div>
   </div>
-
+  
   <!-- Tela Aceitou -->
   <div id="telaAceitou">
     <h1>❣️ Já que você aceitou, por livre e espontânea vontade 😁, então agora é só esperar os preparativos que irei arrumar em 24h úteis! ❣️</h1>
@@ -367,6 +405,7 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
             telaDesbloqueio.remove();
             document.body.classList.add('desbloqueado');
             document.getElementById("telaInicial").classList.add("active");
+            iniciarChuvaRosas(); // INICIA A CHUVA DE ROSAS AQUI
           }, 1000);
         }
       }, 30);
@@ -388,7 +427,7 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
     const audioNao = document.getElementById('audioNao');
     const audioSim = document.getElementById('audioSim');
     const musica = document.getElementById('musica'); // Movido para cá
-    const mensagens = ["Slk 😞🥀...?", "Tem certeza? 🤔", "Eu aceitaria em...🤧", "Você não vai aceitar mesmo? 😔", "Quer saber então ?...", "Já que você não aceita, você também não terá opção 🤠!!"];
+    const mensagens = ["Slk 😞🥀...?", "Tem certeza? 🤔", "Eu aceitaria em...🤧", "Você não vai aceitar mesmo? 😔", "Quer saber então ?...", "você não aceita, então não terá opção!!"];
     let i = 0;
 
     simBtn.onclick = () => {
@@ -405,7 +444,6 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
       setTimeout(() => {
         telaInicial.classList.remove('active');
         telaAceitou.classList.add('active');
-        // Removido o play da música aqui
       }, 1000);
     };
 
@@ -460,11 +498,32 @@ ass: o programador do seu afeto, debugando a vida só pra te compilar um sorriso
       }, 300);
 
       document.getElementById("plim").play();
-      
-      // Música agora toca aqui quando a carta é aberta
       musica.play().catch(() => {
         alert("Clique na tela para ativar o som!");
       });
+    }
+
+    // FUNÇÃO DA CHUVA DE ROSAS (SIMPLIFICADA E FUNCIONAL)
+    function iniciarChuvaRosas() {
+      const area = document.getElementById('areaRosas');
+      
+      function criarRosa() {
+        const rosa = document.createElement('div');
+        rosa.classList.add('rosa');
+        rosa.innerHTML = '🌹';
+        rosa.style.left = Math.random() * 100 + 'vw';
+        rosa.style.animationDuration = (3 + Math.random() * 3) + 's';
+        rosa.style.fontSize = (20 + Math.random() * 15) + 'px';
+        area.appendChild(rosa);
+
+        // Remove a rosa após a animação terminar
+        rosa.addEventListener('animationend', function() {
+          rosa.remove();
+        });
+      }
+
+      // Inicia a chuva de rosas
+      setInterval(criarRosa, 300);
     }
   </script>
 </body>
